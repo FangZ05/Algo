@@ -1,0 +1,12 @@
+28/04/2022
+1. At low time frame, stocks have higher volatility near support and resistance
+2. Identify resistance and support before trading
+3. Have a thesis of movement before trading
+4. Market is a pseudo-random walk around a trendline. This works for both fundamental and technical analysis.
+	Easiest way to make money: capture the trendline. 
+
+27/02/2023
+QQQ average intraday move: 1.964667%
+QQQ average intraday move std: 1.54905856%
+SPY average intraday move: 1.3154564414583017%
+SPY average intraday move std: 0.999813831285733%

@@ -1,0 +1,52 @@
+longBusinessSummary:To maintain the correspondence between the composition and weights of the securities in the trust (the "securities") and the stocks in the NASDAQ-100 Index®, the adviser adjusts the securities from time to time to conform to periodic changes in the identity and/or relative weights of index securities. The composition and weighting of the securities portion of a portfolio deposit are also adjusted to conform to changes in the index. 
+maxAge:86400 
+priceHint:2 
+previousClose:451.76 
+open:451.99 
+dayLow:451.785 
+dayHigh:454.64 
+regularMarketPreviousClose:451.76 
+regularMarketOpen:451.99 
+regularMarketDayLow:451.785 
+regularMarketDayHigh:454.64 
+trailingPE:37.047665 
+volume:5573788 
+regularMarketVolume:5573788 
+averageVolume:43579454 
+averageVolume10days:30730880 
+averageDailyVolume10Day:30730880 
+bid:453.77 
+ask:454.37 
+bidSize:100 
+askSize:300 
+yield:0.0062 
+totalAssets:248359698432 
+fiftyTwoWeekLow:329.56 
+fiftyTwoWeekHigh:454.69 
+fiftyDayAverage:437.4738 
+twoHundredDayAverage:402.01855 
+trailingAnnualDividendRate:1.77 
+trailingAnnualDividendYield:0.0039180093 
+navPrice:451.67 
+currency:USD 
+category:Large Growth 
+ytdReturn:0.1046351 
+beta3Year:1.18 
+fundFamily:Invesco 
+fundInceptionDate:921024000 
+legalType:Exchange Traded Fund 
+threeYearAverageReturn:0.123839 
+fiveYearAverageReturn:0.20617741 
+exchange:NGM 
+quoteType:ETF 
+symbol:QQQ 
+underlyingSymbol:QQQ 
+shortName:Invesco QQQ Trust, Series 1 
+longName:Invesco QQQ Trust 
+firstTradeDateEpochUtc:921076200 
+timeZoneFullName:America/New_York 
+timeZoneShortName:EDT 
+uuid:714d32d4-5f6c-33bc-b36a-765119cb3c4c 
+messageBoardId:finmb_8108558 
+gmtOffSetMilliseconds:-14400000 
+trailingPegRatio:None 
