@@ -10,6 +10,6 @@ X Make proper interactive watchlist
 
 
 General Coding
-X Convert algo into a git project
+O Convert algo into a git project
 X Build suitable environment for C++
 ? Migrate all calculations to C++
