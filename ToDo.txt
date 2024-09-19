@@ -3,7 +3,7 @@ Algo Trading
 X Finish tradingview-styled charting tool
 X Finish automatic Kelly Criterion Calculator
 X Finish Black-Scholes Calculator
-    
+    O create automatic fether for risk-free rate (3month T-bill)
 X Make IBKR data Crawler (now renamed to dataget)
 X Integrate IBKR and Yahoo Finance datacralwer compatibility
 X Make gapfill technical indicator
