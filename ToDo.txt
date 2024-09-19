@@ -3,6 +3,7 @@ Algo Trading
 X Finish tradingview-styled charting tool
 X Finish automatic Kelly Criterion Calculator
 X Finish Black-Scholes Calculator
+    
 X Make IBKR data Crawler (now renamed to dataget)
 X Integrate IBKR and Yahoo Finance datacralwer compatibility
 X Make gapfill technical indicator
@@ -13,3 +14,5 @@ General Coding
 O Convert algo into a git project
 X Build suitable environment for C++
 ? Migrate all calculations to C++
+? Test to make sure all git related codes are working as intended
+X local password manager hosting

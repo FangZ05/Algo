@@ -25,7 +25,7 @@ import misc
 import analysis as an
 import utilities.data_cleaning as clean
 import fundamentals.finFundamentals as finf
-import strategies.technical_strats as strat
+import strategies.technicalStrats as strat
 import strategies.dailyohlc as ohlcstrat
 import backtest as bt
 #market analysis libraries

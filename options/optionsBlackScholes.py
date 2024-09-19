@@ -4,7 +4,7 @@ import scipy.stats as stats
 #easy function access
 N = stats.norm.cdf
 
-def dcalc(S, K, T, r, sigma, q=0):
+def d_calc(S, K, T, r, sigma, q=0):
     '''
     Calculates the d function of Black Scholes Model
 
@@ -35,7 +35,7 @@ def price(cp, S, K, T, r, sigma, q=0):
     q: dividend of underlying
     '''
     tte = T/365.0 #time in years
-    d = dcalc(S, K, tte, r, sigma, q)
+    d = d_calc(S, K, tte, r, sigma, q)
     d1 = d[0]
     d2 = d[1]
     if cp == "c" or cp == "call" or cp == "calls":
@@ -62,7 +62,7 @@ def delta(cp, S, K, T, r, sigma, q=0):
     #calculate d1
     if T < 0.000001:
         T = 0.000001
-    d = dcalc(S, K, T, r, sigma, q)
+    d = d_calc(S, K, T, r, sigma, q)
     d1 = d[0]
     d2 = d[1]
     #import gaussian cdf
