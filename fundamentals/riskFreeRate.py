@@ -59,6 +59,7 @@ def risk_free_rate(verbose=False, update=False):
 
 if __name__ == '__main__':
     #for debugging
-    rate = risk_free_rate()
-    print("\n This is a debugging message for riskFreeRate.py. You should not see this.")
+    rate = risk_free_rate(verbose=True, update=True)
+    print("\n This is a debugging message for riskFreeRate.py. \
+          You should not have seen this. Unless you intent to.")
 
