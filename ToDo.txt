@@ -14,5 +14,6 @@ General Coding
 O Convert algo into a git project
 X Build suitable environment for C++
 ? Migrate all calculations to C++
-? Test to make sure all git related codes are working as intended
+O Test to make sure all git related codes are working as intended
+    O manage git-filter-repo for sensitive data management
 X local password manager hosting
