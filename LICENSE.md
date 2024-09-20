@@ -202,4 +202,5 @@
    limitations under the License.
 
 Additionally, you must also agree with the following:
+
 This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.
