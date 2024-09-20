@@ -1,1 +1,4 @@
+.conda/
+__pycache__/
+fundamentals/risk_free_rate
 passcodes/
