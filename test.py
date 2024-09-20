@@ -3,6 +3,7 @@ import time
 import datetime as dt
 import pytz
 import os
+import options.optionsBlackScholes
 
 start_time = time.time()
 def vixhist(pricedf, period=30):
