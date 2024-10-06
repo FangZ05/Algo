@@ -15,8 +15,8 @@ start_time = time.time()
 
 #library of functions for trading
 import indicators as ind
-import yfinData as ydata
-import charting as charts
+import dataget.yfinData as ydata
+import charting.charting_old as charts
 import optionsBlackScholes as options
 import optionsStrats as strats
 import dividends as div

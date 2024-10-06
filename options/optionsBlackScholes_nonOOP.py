@@ -16,7 +16,7 @@ from fundamentals.riskFreeRate import risk_free_rate
 #easy function access
 N = norm.cdf
 
-rf_rates = risk_free_rate()
+rf_rates = risk_free_rate()/100
 
 def d_calc(S, K, T, sigma, r = rf_rates, q=0):
     '''
@@ -53,7 +53,7 @@ def price(cp, S, K, T, sigma, r = rf_rates, q=0):
     '''
     cp = cp.upper() #turn everything into upper case
     tte = T/365.0 #time in years
-    d = d_calc(S, K, tte, sigma, r = rf_rates, q=0)
+    d = d_calc(S, K, tte, sigma, r = r, q=0)
     d1 = d[0]
     d2 = d[1]
     if cp == "C" or cp == "CALL" or cp == "CALLS":

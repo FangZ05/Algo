@@ -12,43 +12,16 @@ import os
 import csv
 import datetime as dt
 import pytz
+from utilities.fileManagement import find_project_root
 
 '''
 library for downloading yfinance data into csv files.
 Also for downloads basic infos of the stock.
 '''
-def stock_data_get(ticker, timeframe, update = False, chrono = False, period=None):
-    """get the local stock data as a dataframe
-    
-    ticker: ticker of the stock
-    timeframe: timeframe that was interested
-    period: number of datapoints are requested
-    
-    Special note: local df are stored with latest data at the top
-    """
-    
-    #define the path to stock
-    path = f'data/{ticker}'
-    targetfile = f"{path}/{ticker}_{timeframe}.csv"
-    
-    #check if update is needed
-    if update:
-        getTickerData(ticker, timeframe)
-        
-    #get the dataframe
-    pricedf = pd.read_csv(targetfile, nrows = period)
-
-    #ask if we want the stock to be arranged in chronological order
-    if chrono:
-        pricedf = pricedf.reindex(index=pricedf.index[::-1]) #reverse the order so oldest is at top
-    
-    #standardize the data using cleaning module
-    pricedf = clean.stock_data_process(pricedf)
-    
-    return pricedf
+root_dir = find_project_root(project_name = 'algo')+'/' #get the root directory of this project
 
 #function to download stock info
-def stock_info_get(ticker, p='data/'):
+def stock_info_get(ticker, p=root_dir+'data/'):
     #get data from yfinance
     tdata = yf.Ticker(ticker)
 
@@ -72,20 +45,8 @@ def stock_info_get(ticker, p='data/'):
     return info
 
 
-#same as tdata.info, but local
-def stock_info_getLocal(ticker, p='data/'):
-    #get path to file
-    path = p + ticker
-    #open .csv with dictionary reader
-    with open(path+"/{} info.csv".format(ticker), mode='r', encoding='UTF-8') as infile:
-        reader = csv.DictReader(infile)
-        for row in reader:
-            info = row
-    #return a dictionary
-    return info
-
 #specify file path for output
-def getTickerData(ticker, timeframe, update = True,  p='data/', tz = "Australia/Brisbane"):
+def getTickerData(ticker, timeframe, update = True,  p=root_dir+'data/', tz = "Australia/Brisbane"):
     ''''Get the data for specified ticker.
         ticker: stock's ticker symbol
         update: Force update. Default true.
