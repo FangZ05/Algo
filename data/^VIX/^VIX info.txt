@@ -1,0 +1,28 @@
+maxAge : 86400 
+priceHint : 2 
+previousClose : 19.26 
+open : 19.65 
+dayLow : 19.19 
+dayHigh : 19.76 
+regularMarketPreviousClose : 19.26 
+regularMarketOpen : 19.65 
+regularMarketDayLow : 19.19 
+regularMarketDayHigh : 19.76 
+fiftyTwoWeekLow : 15.53 
+fiftyTwoWeekHigh : 35.05 
+fiftyDayAverage : 18.5274 
+twoHundredDayAverage : 22.3272 
+currency : USD 
+exchange : CXI 
+quoteType : INDEX 
+symbol : ^VIX 
+underlyingSymbol : ^VIX 
+shortName : CBOE Volatility Index 
+longName : CBOE Volatility Index 
+firstTradeDateEpochUtc : 631267200 
+timeZoneFullName : America/Chicago 
+timeZoneShortName : CDT 
+uuid : 3242ad08-0a9e-3780-9a97-33cd6d95cbba 
+messageBoardId : finmb_INDEXVIX 
+gmtOffSetMilliseconds : -18000000 
+trailingPegRatio : None 

@@ -6,7 +6,7 @@ All time in GMT
 #library of functions for trading
 import indicators as ind
 import yfinData as ydata
-import charting as chart
+import charting.charting_old as chart
 import optionsBlackScholes as options
 import optionsStrats as strats
 import dividends as div
