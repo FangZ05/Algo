@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
 
     
-import yfinData as ydata
+import dataget.yfinData as ydata
 import pandas as pd
 import utilities.data_cleaning as clean
 from utilities.fileManagement import find_project_root

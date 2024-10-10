@@ -1,0 +1,48 @@
+longBusinessSummary : The Trust holds gold bars and from time to time, issues Baskets in exchange for deposits of gold and distributes gold in connection with redemptions of Baskets. The investment objective of the Trust is for the Shares to reflect the performance of the price of gold bullion, less the Trust’s expenses. The Sponsor believes that, for many investors, the Shares represent a cost-effective investment in gold. 
+maxAge : 86400 
+priceHint : 2 
+previousClose : 242.37 
+open : 243.79 
+dayLow : 241.0908 
+dayHigh : 241.41 
+regularMarketPreviousClose : 242.37 
+regularMarketOpen : 243.79 
+regularMarketDayLow : 241.0908 
+regularMarketDayHigh : 241.41 
+volume : 268658 
+regularMarketVolume : 268658 
+averageVolume : 6579104 
+averageVolume10days : 7022380 
+averageDailyVolume10Day : 7022380 
+bid : 241.25 
+ask : 241.27 
+bidSize : 1400 
+askSize : 1000 
+totalAssets : 73704144896 
+fiftyTwoWeekLow : 173.24 
+fiftyTwoWeekHigh : 247.37 
+fiftyDayAverage : 234.2028 
+twoHundredDayAverage : 213.24075 
+navPrice : 243.90561 
+currency : USD 
+category : Commodities Focused 
+ytdReturn : 0.2678244 
+beta3Year : 0.16 
+fundFamily : SPDR State Street Global Advisors 
+fundInceptionDate : 1100736000 
+legalType : Exchange Traded Fund 
+threeYearAverageReturn : 0.1385238 
+fiveYearAverageReturn : 0.1129792 
+exchange : PCX 
+quoteType : ETF 
+symbol : GLD 
+underlyingSymbol : GLD 
+shortName : SPDR Gold Trust 
+longName : SPDR Gold Shares 
+firstTradeDateEpochUtc : 1100788200 
+timeZoneFullName : America/New_York 
+timeZoneShortName : EDT 
+uuid : b8aa1c71-9a1e-30a9-98e6-c05878a4fef3 
+messageBoardId : finmb_5600649 
+gmtOffSetMilliseconds : -14400000 
+trailingPegRatio : None 

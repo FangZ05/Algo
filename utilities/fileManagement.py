@@ -3,7 +3,8 @@ Codes for managing the path and directories of this project.
 """
 import os
 
-curr_dir = os.path.dirname(os.path.abspath(__file__))
+#get the cwd. WARNING: only works on windows
+curr_dir = os.path.dirname(os.path.abspath(__file__)).lower()
 
 def find_project_root(starting_dir=curr_dir, project_name = 'algo'):
     """
