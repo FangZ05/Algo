@@ -7,7 +7,7 @@ import pandas_ta as ta
 import fundamentals
 import sys
 import os
-import yfinData as ydata
+import dataget.yfinData as ydata
 import fundamentals.finFundamentals as finf
 import yfinance as yf
 import utilities.data_cleaning as clean

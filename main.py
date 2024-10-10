@@ -17,8 +17,8 @@ start_time = time.time()
 import indicators as ind
 import dataget.yfinData as ydata
 import charting.charting_old as charts
-import optionsBlackScholes as options
-import optionsStrats as strats
+import options.optionsBlackScholes as options
+import options.optionsStrats as strats
 import dividends as div
 import fixed_income as fixed
 import misc

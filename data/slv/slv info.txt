@@ -1,0 +1,48 @@
+longBusinessSummary : The Trust seeks to reflect such performance before payment of the Trust's expenses and liabilities. It is not actively managed. The Trust does not engage in any activities designed to obtain a profit from, or to ameliorate losses caused by, changes in the price of silver. 
+maxAge : 86400 
+priceHint : 2 
+previousClose : 28.01 
+open : 28.41 
+dayLow : 27.59 
+dayHigh : 27.67 
+regularMarketPreviousClose : 28.01 
+regularMarketOpen : 28.41 
+regularMarketDayLow : 27.59 
+regularMarketDayHigh : 27.67 
+volume : 1219575 
+regularMarketVolume : 1219575 
+averageVolume : 19170007 
+averageVolume10days : 25676230 
+averageDailyVolume10Day : 25676230 
+bid : 27.7 
+ask : 27.7 
+bidSize : 38500 
+askSize : 2900 
+totalAssets : 14574601216 
+fiftyTwoWeekLow : 19.93 
+fiftyTwoWeekHigh : 30.07 
+fiftyDayAverage : 26.9642 
+twoHundredDayAverage : 24.95 
+navPrice : 28.52816 
+currency : USD 
+category : Commodities Focused 
+ytdReturn : 0.28604218 
+beta3Year : 0.48 
+fundFamily : iShares 
+fundInceptionDate : 1145577600 
+legalType : Exchange Traded Fund 
+threeYearAverageReturn : 0.1016484 
+fiveYearAverageReturn : 0.110168 
+exchange : PCX 
+quoteType : ETF 
+symbol : SLV 
+underlyingSymbol : SLV 
+shortName : iShares Silver Trust 
+longName : iShares Silver Trust 
+firstTradeDateEpochUtc : 1146231000 
+timeZoneFullName : America/New_York 
+timeZoneShortName : EDT 
+uuid : af87aa35-b248-337f-8470-c3cafa3f6173 
+messageBoardId : finmb_22769902 
+gmtOffSetMilliseconds : -14400000 
+trailingPegRatio : None 

@@ -21,6 +21,11 @@ if __name__ == '__main__':
     # Add the grandparent directory to sys.path
     sys.path.insert(0, grandparent_dir)
 
+from dataget.dataget import stock_data_get
+
+#function to calculate the quantile of a value within the series
+from scipy.stats import percentileofscore
+
 #=====================#
 
 #=====================#
@@ -29,24 +34,12 @@ if __name__ == '__main__':
 
 if __name__ == '__main__':
     #run as a script
-
+    
+    #use daily 
     ticker = "^VIX"
-    #define the path to stock
-    path = f'data/{ticker}'
-    targetfile = f"{path}/{ticker}_{timeframe}.csv"
+    timeframe = '1d'
     
-    #check if update is needed
-    if update:
-        ydata.getTickerData(ticker, timeframe)
-        
-    #get the dataframe
-    pricedf = pd.read_csv(targetfile, nrows = period)
-
-    #ask if we want the stock to be arranged in chronological order
-    if chrono:
-        pricedf = pricedf.reindex(index=pricedf.index[::-1]) #reverse the order so oldest is at top
+    vixdf = stock_data_get(ticker, timeframe)
+    vix = vixdf['Close']
     
-    #standardize the data using cleaning module
-    pricedf = clean.stock_data_process(pricedf)
     
-    return pricedf
