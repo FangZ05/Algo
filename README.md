@@ -1,4 +1,4 @@
-This is my personal algo trader.
+This is my personal algo trader. 
 
 Mainly used for stocks and options analysis.
 
