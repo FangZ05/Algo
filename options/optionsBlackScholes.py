@@ -23,7 +23,8 @@ class options:
     p = 'puts'
     def not_cp():
         raise Exception("Error: not a put or call.")
-        
+    
+    #initialize class
     def __init__(self, cp, S, K, T, sigma, r = rf_rates, q=0):
         """
         Initialize parameters.
@@ -32,44 +33,48 @@ class options:
         S: underlying price.
         K: options strike price.
         T: Time until expiry (days).
-        sigma: implied volatility of the options as a decimal, i.e. 100% IV = 1
+        sigma: implied volatility of the options as a percentage, i.e. 100% IV = 100
         r: risk free rates. Default 3mo T-bill yield.
         q: dividend of underlying in dollars. Default zero.
         """
+        self.callput = cp
         self.S = S
         self.K = K
         self.tte = T
-        self.sigma = sigma/100
-        self.r = r/100
-        self.q = q*4/S
-        
-        #simplify defining type, as calls or puts
-        cp = cp.upper()
+        self.sig = sigma
+        self.rate = r
+        self.dividend = q
+    
+    #=====define fixed variables and functions=====#
+    @property
+    def cp(self):
+        cp = self.callput.upper()
         if cp == "C" or cp == "CALL" or cp == "CALLS":
-            self.cp = self.c
+            return self.c
         elif cp == "P" or cp == "PUT" or cp == "PUTS":
-            self.cp = self.p
+            return self.p
         else:
             self.not_cp
-            
+    
+    @property
+    def sigma(self):
+        return self.sig/100
+    
+    @property
+    def r(self):
+        return self.rate/100
+    
+    @property
+    def q(self):
+        return self.dividend*4/self.S
+    
+    @property
+    def T(self):
         #limit T so you do not get divide by zero error
         if self.tte < 0.000001:
-            self.T = 0.000001
+            return 0.000001
         else:
-            self.T = self.tte/365.0
-         
-    @property
-    #print out parameters
-    def params(self):
-        return {'cp':self.cp,
-                'S': self.S, 
-                'K': self.K, 
-                'T': self.tte, 
-                'r':self.r,
-                'q':self.q,
-                'sigma':self.sigma}
-    
-    #define fixed functions
+            return self.tte/365.0
     
     @property
     def div_decay(self):
@@ -78,7 +83,20 @@ class options:
     @property
     def rf_decay(self):
         return np.exp(-self.r*self.T)
-    
+            
+    @property
+    #print out parameters
+    def params(self):
+        return {'call or put':self.cp,
+                'underlying price': self.S, 
+                'strike': self.K, 
+                'days til expiry': self.tte, 
+                'IV (%)':self.sig,
+                'risk-free rate (%)':self.rate,
+                'annual dividend (%)':self.q
+                }
+                
+   
     
     #====calculates the d-functions in Black-Scholes====#
     @property
