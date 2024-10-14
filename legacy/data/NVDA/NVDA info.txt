@@ -1,3 +1,0 @@
-regularMarketPrice:None 
-preMarketPrice:None 
-logo_url: 

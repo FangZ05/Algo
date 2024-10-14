@@ -7,8 +7,8 @@ import pandas_ta as ta
 import fundamentals
 import sys
 import os
-import yfinData as ydata
-import utilities.finFundamentals
+import dataget.yfinData as ydata
+import fundamentals.finFundamentals
 
 nytz = pytz.timezone('US/Eastern')
 tz = "Australia/Brisbane"

@@ -23,8 +23,7 @@ class options:
     p = 'puts'
     def not_cp():
         raise Exception("Error: not a put or call.")
-    
-    #initialize class
+        
     def __init__(self, cp, S, K, T, sigma, r = rf_rates, q=0):
         """
         Initialize parameters.
@@ -32,74 +31,53 @@ class options:
         cp: calls or puts.
         S: underlying price.
         K: options strike price.
-        T: Time until expiry (days).
-        sigma: implied volatility of the options as a percentage, i.e. 100% IV = 100
+        T: Time until expiry (years).
+        sigma: implied volatility of the options.
         r: risk free rates. Default 3mo T-bill yield.
-        q: dividend of underlying in dollars. Default zero.
+        q: dividend of underlying. Default zero.
         """
-        self.callput = cp
         self.S = S
         self.K = K
         self.tte = T
-        self.sig = sigma
-        self.rate = r
-        self.dividend = q
-    
-    #=====define fixed variables and functions=====#
-    @property
-    def cp(self):
-        cp = self.callput.upper()
+        self.sigma = sigma
+        self.r = r
+        self.q = q
+        
+        #simplify defining type, as calls or puts
+        cp = cp.upper()
         if cp == "C" or cp == "CALL" or cp == "CALLS":
-            return self.c
+            self.cp = self.c
         elif cp == "P" or cp == "PUT" or cp == "PUTS":
-            return self.p
+            self.cp = self.p
         else:
             self.not_cp
-    
-    @property
-    def sigma(self):
-        return self.sig/100
-    
-    @property
-    def r(self):
-        return self.rate/100
-    
-    @property
-    def q(self):
-        return self.dividend*4/self.S
-    
-    @property
-    def T(self):
+            
         #limit T so you do not get divide by zero error
         if self.tte < 0.000001:
-            return 0.000001
+            self.T = 0.000001
         else:
-            return self.tte/365.0
-    
-    @property
-    def div_decay(self):
-        return np.exp(-self.q*self.T)
-    
-    @property
-    def rf_decay(self):
-        return np.exp(-self.r*self.T)
-            
+            self.T = self.tte
+         
     @property
     #print out parameters
     def params(self):
-        return {'call or put':self.cp,
-                'underlying price': self.S, 
-                'strike': self.K, 
-                'days til expiry': self.tte, 
-                'IV (%)':self.sig,
-                'risk-free rate (%)':self.rate,
-                'annual dividend (%)':self.q
-                }
-                
-   
+        return {'cp':self.cp,
+                'S': self.S, 
+                'K': self.K, 
+                'T': self.tte, 
+                'r':self.r,
+                'q':self.q,
+                'sigma':self.sigma}
+    
+    #define fixed functions
+    @staticmethod
+    def div_deay(self):
+        return np.exp(-self.q*self.T)
+    def rf_decay(self):
+        return np.exp(-self.r*self.T)
     
     #====calculates the d-functions in Black-Scholes====#
-    @property
+    
     def d1(self):
         """
         Calculates the d1 function of Black Scholes Model.
@@ -107,12 +85,12 @@ class options:
         d1 = (np.log(self.S/self.K) + (self.r - self.q + self.sigma**2/2)*self.T) \
             /(self.sigma*np.sqrt(self.T))
         return d1
-    @property
+    
     def d2(self):
         """
         Calculates the d1 function of Black Scholes Model.
         """
-        d2 = self.d1 - (self.sigma*np.sqrt(self.T))
+        d2 = self.d1() - (self.sigma*np.sqrt(self.T))
         return d2
 
     #====calculate the options' price====#
@@ -122,13 +100,13 @@ class options:
         '''
         if self.cp == self.c:   
             #calculate call price
-            price = self.S *np.exp(-self.q*self.T)* N(self.d1) - \
-                self.K * np.exp(-self.r*self.T) * N(self.d2)
+            price = self.S *self.div_deay* N(self.d1()) - \
+                self.K * self.rf_decay * N(self.d2())
             return price
         elif self.cp == self.p:
             #calculate put price
-            price = self.K * np.exp(-self.r * self.T) * N(-self.d2) - \
-                self.S*np.exp(-self.q*self.T)*N(-self.d1)
+            price = self.K * np.exp(-self.r * self.T) * N(-self.d2()) - \
+                self.S*np.exp(-self.q*self.T)*N(-self.d1())
             return price
         else:
             self.not_cp
@@ -141,11 +119,11 @@ class options:
         '''
         #call option
         if self.cp == self.c:   
-            return self.div_decay*N(self.d1)
+            return self.div_deay*N(self.d1())
         
         #put option
         elif self.cp == self.p:
-            return self.div_decay*N(self.d1) - 1
+            return -self.div_decay*N(self.d1())
         
         else:
             self.not_cp
@@ -153,13 +131,10 @@ class options:
     def gamma(self):
         """
         Calculates the Gamma of a option
-        *******
-        WIP
-        ********
         """
         #call option
         if self.cp == self.c:   
-            return self.div_decay*N(self.d1)
+            return self.div_deay*N(self.d1)
         
         #put option
         elif self.cp == self.p:
