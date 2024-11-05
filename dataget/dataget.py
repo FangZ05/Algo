@@ -58,6 +58,9 @@ def stock_data_get(ticker, timeframe, update = False, chrono = False, period=Non
     #standardize the data using cleaning module
     pricedf = clean.stock_data_process(pricedf)
     
+    #add the change and change% columns
+    pricedf = clean.add_change(pricedf)
+    
     return pricedf
 
 #same as tdata.info, but local

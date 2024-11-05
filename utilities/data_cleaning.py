@@ -3,6 +3,7 @@ import pandas as pd
 import pytz
 from pathlib import Path
 import os
+import datetime as dt
 
 #potential libs for finding dataframe types
 #from pandas.api.types import is_float_dtype
@@ -159,3 +160,30 @@ def historic_data_process(ticker, timeframe, tz = nytz):
 
     else:
         print("No need for cleaning, target file does not exist")
+
+#======dataframe extra info columns=====#
+def add_change(pricedf):
+    """
+    Adds the change between two periods of a stock's data.
+
+    input:
+        pricedf: price data of the stock
+
+    return:
+        pricedf: pricedf with change and change %.
+    """
+    #check if the dataframe is in chronological order
+    if pricedf['Time'][0] - pricedf['Time'][1] > dt.timedelta(0):
+        chrono = False
+    else:
+        chrono = True
+
+    #get change 
+    if chrono:
+        pricedf['Change'] = pricedf['Close'].diff()
+        pricedf['Change%'] = pricedf['Change']*100/pricedf['Close']
+    else:
+        pricedf['Change'] = pricedf['Close'].diff(periods=-1)
+        pricedf['Change%'] = pricedf['Change']*100/pricedf['Close']
+
+    return pricedf.fillna(0)
