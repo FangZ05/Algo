@@ -120,9 +120,9 @@ class options:
             N(d1): the probability that the option will be in-the-money at expiration, 
             adjusted for the present value of the exercise price. It accounts for the expected growth of the stock price.
         """
-        p1 = np.log(self.S / self.K)
-        p2 = (self.r - self.q + self.sigma**2/2)*self.T
-        p3 = self.sigma * np.sqrt(self.T)
+        p1 = np.log(self.S / self.K) #log ratio of strike to current price
+        p2 = (self.r - self.q + self.sigma**2/2)*self.T #rate of price diffusion
+        p3 = self.sigma * np.sqrt(self.T) #decay over time
         d1 = (p1 + p2)/p3
         return d1
     

@@ -12,7 +12,7 @@ with open('../passcodes/api_key_fred ', 'r') as f:
 fred = Fred(api_key=api_key)
 
 # Fetch the Federal Funds Rate using the FRED series ID: 'FEDFUNDS'
-fed_funds_rate = fred.get_series('SP500')
+fed_funds_rate = fred.get_series('FEDFUNDS')
 
 # Display the latest rate
 latest_rate = fed_funds_rate.iloc[-1]
