@@ -137,9 +137,17 @@ def theta_optimal_diagonal(diag1, diag2, verbose=False):
     return 0
 
 
-
-
-
+if __name__ == '__main__':
+    c = 'c'
+    p = 'p'
+    
+    def optimize(options):
+        results = deepcopy(options)
+        for i in range(10):
+            results.tte = theta_optimal_t(results)[0]
+            results.K = theta_optimal_K(results)[0]
+            
+        
 
 
 

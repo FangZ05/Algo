@@ -34,6 +34,7 @@ if __name__ == '__main__':
 from utilities.fileManagement import find_project_root
 import dataget.ibkrData as ib
 from dataget.ibkrApp import md #metadata
+from dataget.ibkrApp import autoport
 from dataget.ibkrData_initialize import save_contract_details
 
 
@@ -47,43 +48,71 @@ class IBApp(ib.IBApp):
     def __init__(self):
         ib.IBApp.__init__(self)
         self.market_data = {} #list of requested data for a contract
+        self.market_greek = {}
+        self.market_oi = {}
         self.DataReq_event = Event()
         self.data_lock = Lock()
-
-    def request_Data(self, contracts):
-        """Request market data for a list of contracts."""
-        #self.reqMarketDataType(2)
-        time.sleep(0.5)
-        for i, contract in enumerate(contracts):
-            ticker_id = i+1
-            self.market_data[ticker_id] = {}
-            self.market_data[ticker_id]['ticker'] = contract.symbol
-            self.market_data[ticker_id]['expiry'] = contract.lastTradeDateOrContractMonth
-            self.market_data[ticker_id]['strike'] = contract.strike
-            self.market_data[ticker_id]['right'] = contract.right
-            
-            # Request market data with the `snapshot=False` to get continuous updates
-            
-            
-            self.reqMktData(ticker_id, 
-                            contract, 
-                            "100,101,104,106", 
-                            False, 
-                            False, 
-                            [])
-            print(f"requesting market data for {contract.symbol}: {contract.lastTradeDateOrContractMonth}")
     
-    def marketDataType(self, reqId: int, marketDataType:int):
-        self.market_data[reqId]['dataType'] = marketDataType
-        print("MarketDataType. ReqId:", reqId, "Type:", marketDataType)
+    
+    def request_options_data(self, reqId, contract):
+        """
+        Request open interest and greek of an option contract.
+        """
+        #initialize marekt data returns
+        
+        if reqId not in self.market_data:
+            self.market_data[reqId] = {}
+            
+        self.market_data[reqId]['ticker'] = contract.symbol
+        self.market_data[reqId]['expiry'] = contract.lastTradeDateOrContractMonth
+        self.market_data[reqId]['strike'] = contract.strike
+        self.market_data[reqId]['right'] = contract.right
+        self.market_data[reqId]['open_interest'] = 0
+        
+        #generate separate tracker ID for OI request and greek request
+        tracker_id = reqId*2 #double the id space for two requests 
+        #self.request_options_openInterest(tracker_id, contract)
+        self.request_options_greeks(tracker_id + 1, contract)
+        
+        print(f"requesting market data for {contract.symbol} {contract.strike}{contract.right}: {contract.lastTradeDateOrContractMonth}")
+    def request_options_openInterest(self, tracker_id, contract):
+        """
+        Request open interest for an options contract using live method.
+        """
+        self.reqMarketDataType(1) #live data
+        self.reqMktData(tracker_id, 
+                        contract, 
+                        "101", 
+                        False, 
+                        False, 
+                        [])
+    
+    def request_options_greeks(self, tracker_id, contract):
+        """
+        Request market data for an options contract using frozen method.
+        """
+        self.reqMarketDataType(2) #live or frozen data
+
+        # Request market data with the `snapshot=False` to get continuous updates
+        
+        self.reqMktData(tracker_id, 
+                        contract, 
+                        "100, 101, 104, 106", 
+                        False, 
+                        False, 
+                        [])
+        
+    #def marketDataType(self, reqId: int, marketDataType:int):
+    #    self.market_data[reqId]['dataType'] = marketDataType
+    #    print("MarketDataType. ReqId:", reqId, "Type:", marketDataType)
         
     def tickPrice(self, reqId: int, tickType: int, price: float, attrib: int):
         with self.data_lock:
-            if reqId not in self.market_data:
-                self.market_data[reqId] = {}
+            if reqId not in self.market_greek:
+                self.market_greek[reqId] = {}
             
             if tickType in [TickTypeEnum.BID, TickTypeEnum.ASK, TickTypeEnum.LAST]:
-                self.market_data[reqId][TickTypeEnum.toStr(tickType)] = price
+                self.market_greek[reqId][TickTypeEnum.toStr(tickType)] = price
                 print(f"Price update for ticker {reqId} - {TickTypeEnum.toStr(tickType)}: {price}")
                  
 
@@ -96,29 +125,34 @@ class IBApp(ib.IBApp):
                               theta: float, undPrice: float):
         
         with self.data_lock:
-            if reqId not in self.market_data:
-                self.market_data[reqId] = {}
+            if reqId not in self.market_greek:
+                self.market_greek[reqId] = {}
     
             # Store the Greeks
             if tickType == TickTypeEnum.MODEL_OPTION:
-                self.market_data[reqId].update({
+                self.market_greek[reqId].update({
                 "Delta": delta,
                 "Gamma": gamma,
                 "Theta": theta,
                 "Implied Volatility": impliedVol
                 })
-                print(f"Greeks update for ticker {reqId} - Delta: {delta}, Gamma: {gamma}, Theta: {theta}")
+                print(f"Greeks update for ticker {reqId} - "
+                      f"Delta: {delta:.2f}, Gamma: {gamma:.2f}"
+                      f"Theta: {theta:.2f}")
              
     def tickSize(self, reqId: int, tickType: int, size: int):
         with self.data_lock:
-            if reqId not in self.market_data:
-                self.market_data[reqId] = {}
-        
+            if reqId not in self.market_oi:
+                self.market_oi[reqId] = {}
+                self.market_oi[reqId]['open_interest'] = 0
+                
+            print(f"request tickSize for {reqId}: type {tickType}")
             # Map tick types to meaningful names
-            if tickType == 27:  # Option Call Open Interest
-                self.market_data[reqId]['open_interest'] = size
-            elif tickType == 28:  # Option Put Open Interest
-                self.market_data[reqId]['open_interest'] = size
+            open_interest = [27, 28] #27 for call OI, 28 for put OI
+            if tickType in open_interest:  # Option Call Open Interest
+                self.market_oi[reqId]['open_interest'] += size
+                print(f"OI update for ticker {reqId} - +{size}")
+            
                     
 def get_option_contracts(ticker, expr = None, data_dir = data_dir, update = False):
     """
@@ -226,7 +260,7 @@ def req_option_data(ticker,
         api_thread.start()
         time.sleep(0.1) #small pause to make sure there is no race
         
-        app.reqMarketDataType(2)
+        app.reqMarketDataType(4)
         app.request_Data(contract_list)
         
         app.DataReq_event.wait(timeout=120)
@@ -248,10 +282,19 @@ if __name__ == "__main__":
     print("hello world")
     ticker = 'TSLA'
     contract_details = get_option_contracts(ticker)
-    contract_list = contract_from_df(contract_details)
+    contracts = contract_from_df(contract_details)
+
     
     app = IBApp()
-    
+    port = 7497
+    #app.api_run()
+    def run_req(lst):
+        #app.reqMarketDataType(1)
+        for i, contract in enumerate(lst):
+            reqId = i+1
+            app.request_options_data(reqId, contract)
+            #app.request_options_openInterest(reqId, contract)
+            
     #app.connect("127.0.0.1", 7497, clientId=1)
     #thread = Thread(target=app.run, daemon=True)
     #thread.start()

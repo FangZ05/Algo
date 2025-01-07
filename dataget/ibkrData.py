@@ -34,7 +34,7 @@ from ibapi.contract import Contract
 from utilities.fileManagement import find_project_root
 from dataget.ibkrApp import md
 from dataget.ibkrApp import IBApp as parentIBApp
-from dataget.ibkrApp import find_active_ib_port
+from dataget.ibkrApp import autoport
 
 #=====Essential objects=====#
 
@@ -130,7 +130,7 @@ def get_stock_data(ticker, timeframe, update = True,  p=md.root_dir+'data/', \
         if md.port in md.ibkr_ports:
             port = md.port
         else:
-            port = find_active_ib_port(app)
+            port = autoport(app)
         app.connect(host, port, client)
 
     
@@ -160,7 +160,7 @@ def get_option_data(ticker, expiry, p=md.root_dir+'data/', \
     app = IBApp()
     try:
         #connect to IBAPI by detecting the active port
-        port = find_active_ib_port(app)
+        port = autoport(app)
         app.connect(md.localhost, port, client)
         
         api_thread = Thread(target=app.run_loop, args=(app,), daemon=False)

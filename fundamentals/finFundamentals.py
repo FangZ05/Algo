@@ -169,3 +169,11 @@ def stock_ratio_close(pricedf1, pricedf2, period=365):
     
     return ratio
     
+def shapre_ratio(list):
+    """
+    Calculate the Sharpe ratio of the portfolio.
+
+    Input:
+        list: the list of portfolio value
+    """
+

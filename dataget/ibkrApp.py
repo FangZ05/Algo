@@ -18,11 +18,12 @@ if __name__ == '__main__':
     sys.path.insert(0, grandparent_dir)
 
 #modules from Python
+import datetime as dt
 from datetime import datetime
 from pytz import timezone
-import datetime as dt
 from threading import Thread
 from threading import Event
+import time
 
 #modules from IBAPI
 from ibapi.client import EClient
@@ -46,7 +47,7 @@ class md():
     port = 4001 #ID for IBKR port. Choose among [7497, 7496, 4002, 4001] 
                 #to use designated port, otherwise use find_active_ib_port to detect it automatically
     ibkr_ports = [4001, 7497, 4002, 7496] #The list of TWS and Gateway ports, prioritize Live account and IBGateway
-    
+    timeout = 120 #timeout time in seconds
     
 
     #define contract metadata
@@ -57,6 +58,9 @@ class md():
     #time variables
     tz = timezone('US/Eastern') #timezone 
     now = datetime.now(tz=tz)
+    is_marketopen = (now.time() > dt.time(9, 30)) and (now.time() < dt.time(16))
+        #check if the market is open
+        
     lastexpr = now + dt.timedelta(days=7) #last expiry date of interest, default 7 days from now
     
     #date conversion functions
@@ -108,24 +112,28 @@ class IBApp(EWrapper, EClient):
         """
         self.connect(host, port, client)
 
-    def threaded_run(self):
+    def api_run(self, port = md.port):
         """
         run the app on a separate thread.
         """
-        self.api_connect()
+        self.api_connect(port = port)
         thread = Thread(target=self.run, daemon=True)
         thread.start()
         self.current_thread.append(thread)
+        
+        time.sleep(0.1) #small pause to make sure there is no race
 
     def api_disconnect(self):
         #disconnect from IBPAI, clear connection event, and join any running thread
         try:
-            for i in self.current_thread:
-                i.join()
-                print(f"{i} has joined the main thread.")
             self.connection_event.clear()
             self.disconnect()
             print("Disconnected from IBAPI.")
+
+            for i in self.current_thread:
+                i.join()
+                print(f"{i} has joined the main thread.")
+            self.current_thread = []
         except:
             print("Error disconnecting.")
 
@@ -143,7 +151,7 @@ class IBApp(EWrapper, EClient):
             print(f"Critical Error {errorCode}: {errorString}")
             self.api_disconnect()
 
-def find_active_ib_port(app = IBApp(), host=md.localhost, client=md.client) -> int:
+def autoport(app = IBApp(), host=md.localhost, client=md.client) -> int:
     """
     Attempt connection to common IBKR ports using ibapi to find an active one.
 

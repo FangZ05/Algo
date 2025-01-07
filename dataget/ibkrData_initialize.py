@@ -83,6 +83,7 @@ class IBApp(ib.IBApp):
         # Disconnect if the request failed.
         if not self.contractReq_event.is_set():
             print("Contract Request Failed.")
+            self.api_disconnect()
     
     def error(self, reqId, errorCode, errorString, advancedOrderRejectJson=''):
         #call the original function first
@@ -149,12 +150,8 @@ def get_option_contracts(ticker,
         #connect to IBAPI by detecting the active port
         
         if not port:
-            port = ib.find_active_ib_port(app)
-        app.connect(host, port, client)
-        #generate a main thread
-        api_thread = Thread(target=app.run_loop, daemon=False)
-        api_thread.start()
-        time.sleep(0.1) #small pause to make sure there is no race
+            port = ib.autoport(app)
+        app.api_run(port)
         
         for i, contr in enumerate(contracts):
             app.get_option_chain_full(contr, reqId=i+1)
@@ -170,8 +167,6 @@ def get_option_contracts(ticker,
     finally:
         #always join thread and disconnect api after everything
         app.api_disconnect()
-        if api_thread:
-            api_thread.join() #end of threaded operation
         print("End of Operation.")
         
     return app.df_option_chain
